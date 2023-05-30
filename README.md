@@ -1,34 +1,26 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+### Implementation
 
-## Getting Started
+In Next-13 all components in app directory are RSC by default, which means they can read translations files directly, we use this ability to read required translations labels given variables `pathname` and `locale`. We map `pathname` to an array of `namespaces`, for the ease of maintaining translation files, eg. `/feature-1` might need namespaces `common + feature-1`.
 
-First, run the development server:
+The `page` component fetches and caches the translations for given locale and namespaces into a `globalThis` instance which is used by RSC child components to retreive translations, and for client components we use a ContextProvider to expose translations from Page component. The method `useTranslation` behaves differently based on the caller's window object, if window object is defiend we use ContextProvider otherwise we use cached results at `globalThis`.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+During development each refresh will cause the translation files to be read and cached to avoid stale values when labels are updated. In production, since labels aren't going to be change, it is best that first read result is re-used on every request.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### TODO
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- [x] Retreive all locale namespaces on page level component for given pathname
+- [x] Usage of translation in RSC directly
+- [x] Usage of translation in Client side component using Context.Provider approach
+- [ ] Cache first read and re-use translations on production env. and support hot reloading without hydration error on development env.
+- [ ] Page wrapper to automatically fill-in required i18n namespaces based on locale and pathname key
+- [ ] Support for Default Locale - i.e use middleware to rewrite `/da/[path]` to `/[path]`
+- [ ] Support features such as query substitution and plural forms
+- [ ] Country tag based overriding of labels
+  - eg. `en` defines all generic labels and `en-US | en-UK` implement country specific labels variants
+  - if country code is passed then override the labels in generic with more specific country labels.
+- [ ] Type-safety + autocompletion (low priority)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+#### References:
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- https://nextjs.org/docs/app/building-your-application/routing/internationalization
+- https://github.com/vercel/next.js/issues/41980
