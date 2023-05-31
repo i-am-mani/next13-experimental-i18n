@@ -13,7 +13,7 @@ During development each refresh will cause the translation files to be read and 
 - [x] Usage of translation in Client side component using Context.Provider approach
 - [x] Cache first read and re-use translations on production env. and support hot reloading without hydration error on development env.
 - [ ] Page wrapper to automatically fill-in required i18n namespaces based on locale and pathname key
-- [ ] Support for Default Locale - i.e use middleware to rewrite `/da/[path]` to `/[path]`
+- [x] Support for Default Locale - i.e use middleware to rewrite `/da/[path]` to `/[path]`
 - [x] Support features such as query substitution and plural forms
   - [x] Interpolation
   - [x] Plural forms

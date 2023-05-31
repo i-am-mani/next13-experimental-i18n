@@ -1,5 +1,5 @@
 export const I18nConfigurations = {
-  locales: ["en", "ca"],
+  locales: ["en", "da"],
   defaultLocale: "en",
   pages: {
     common: ["common"],
