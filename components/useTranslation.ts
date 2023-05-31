@@ -3,8 +3,8 @@ import { useTranslationsClient } from "./I18nProvider";
 export function useTranslationServerOnly(
   namespace: string
 ): (key: string) => string {
-  const namespaces = globalThis.i18nTranslations;
-  const namespaceRecords = namespaces[namespace];
+  const i18n = globalThis.i18nTranslations;
+  const namespaceRecords = i18n.namespaces[namespace];
 
   return (key: string) => {
     const value = typeof namespaceRecords === "object" && namespaceRecords[key];

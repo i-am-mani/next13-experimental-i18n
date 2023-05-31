@@ -6,8 +6,6 @@ import { I18nProvider } from "../../components/I18nProvider";
 import { IndexClientComponent } from "./IndexClientComponent";
 
 export default async function Page({ params }: { params: { locale: string } }) {
-  console.log(params);
-
   const translations = await loadNamespacesFromCache(
     [...I18nConfigurations.pages.common, ...I18nConfigurations.pages.index],
     params.locale
