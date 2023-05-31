@@ -1,4 +1,5 @@
 import { LocaleConfig, LocaleNamespaces, Namespace as LabelNamespace } from ".";
+import { I18nNamespaces } from "../i18n";
 
 function formatCurrency(
   value: number | string,
@@ -65,7 +66,7 @@ function interpolation(
 }
 
 function extractPluralKey(
-  namespaces: LabelNamespace,
+  namespaces: LabelNamespace<any>,
   key: string,
   count: number,
   locale: string
@@ -99,31 +100,31 @@ function extractPossibleNamespace(key: string, defaultNamespace: string) {
   }
 }
 
-export function LocalizationCore({
+export function LocalizationCore<T extends keyof I18nNamespaces>({
   defaultNamespace,
   locale: localeConfig,
   namespaces,
 }: {
-  defaultNamespace: string;
+  defaultNamespace: T;
   namespaces: LocaleNamespaces;
   locale: LocaleConfig;
 }) {
   const t = (
-    key: string,
+    key: keyof I18nNamespaces[T],
     interpolationValue: Record<string, string | number> | null = null,
     options?: {}
   ) => {
     // key could be in form of 'ns:key' eg. "common:hello"
     let { key: tKey, namespace: tNSKey } = extractPossibleNamespace(
-      key,
+      key as string,
       defaultNamespace
     );
-    const nsDictionary = namespaces[tNSKey];
+    const nsDictionary = (namespaces as any)[tNSKey];
 
     if (interpolationValue == null) {
       const value = nsDictionary[tKey];
       if (value == null) {
-        throw Error(`Missing translation for key ${key}`);
+        throw Error(`Missing translation for key ${key as string}`);
       } else {
         return value;
       }
@@ -146,7 +147,7 @@ export function LocalizationCore({
       if (typeof rawText === "object") {
         throw Error(`Nested translation value is not supported!`);
       } else if (rawText == null) {
-        throw Error(`Missing translation for key ${key}`);
+        throw Error(`Missing translation for key ${key as string}`);
       }
 
       return interpolation(rawText, interpolationValue, localeConfig);

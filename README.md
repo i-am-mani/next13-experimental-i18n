@@ -12,7 +12,7 @@ During development each refresh will cause the translation files to be read and 
 - [x] Usage of translation in RSC directly
 - [x] Usage of translation in Client side component using Context.Provider approach
 - [x] Cache first read and re-use translations on production env. and support hot reloading without hydration error on development env.
-- [ ] Page wrapper to automatically fill-in required i18n namespaces based on locale and pathname key
+- [x] Page wrapper to automatically fill-in required i18n namespaces based on locale and pathname key
 - [x] Support for Default Locale - i.e use middleware to rewrite `/da/[path]` to `/[path]`
 - [x] Support features such as query substitution and plural forms
   - [x] Interpolation
@@ -20,7 +20,7 @@ During development each refresh will cause the translation files to be read and 
 - [x] Country tag based overriding of labels
   - eg. `en` defines all generic labels and `en-US | en-UK` implement country specific labels variants
   - if country code is passed then override the labels in generic with more specific country labels.
-- [ ] Type-safety + autocompletion (low priority)
+- [x] Type-safety + autocompletion (low priority)
 
 #### References:
 

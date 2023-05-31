@@ -1,23 +1,21 @@
 import * as React from "react";
-import { loadNamespacesFromCache } from "../../components/initializer";
-import { I18nConfigurations } from "../../i18n";
-import { useTranslation } from "../../components/useTranslation";
-import { I18nProvider } from "../../components/I18nProvider";
 import { IndexClientComponent } from "./IndexClientComponent";
+import { I18nPageWrapper } from "../I18nPageWrapper";
+import { useTranslation } from "../../components/useTranslation";
+
+function Title() {
+  const { t } = useTranslation("index");
+  return <div className="text-3xl font-semibold">{t("first_page_title")}</div>;
+}
 
 export default async function Page({ params }: { params: { locale: string } }) {
-  const translations = await loadNamespacesFromCache(
-    [...I18nConfigurations.pages.common, ...I18nConfigurations.pages.index],
-    params.locale
-  );
-  const { t } = useTranslation("index");
-
   return (
     <div>
-      <div className="text-3xl font-semibold">{t("first_page_title")}</div>
-      <I18nProvider namespaces={translations}>
+      {/* @ts-expect-error Server Component */}
+      <I18nPageWrapper locale={params.locale} pathname={"index"}>
+        <Title />
         <IndexClientComponent />
-      </I18nProvider>
+      </I18nPageWrapper>
     </div>
   );
 }

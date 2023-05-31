@@ -1,8 +1,8 @@
 "use server";
 import fs from "fs/promises";
-import { LocaleNamespaces } from ".";
 import path from "path";
 import { mergeNamespaceInPlace } from "./merge-namespaces";
+import { I18nNamespaces } from "../i18n";
 
 async function readLocaleNamespaces(locale: string) {
   const directory = process.cwd() + "/locales/" + locale;
@@ -21,16 +21,16 @@ async function readLocaleNamespaces(locale: string) {
   const namespacesObject = filenames.reduce((acc, filename, index) => {
     acc[filename] = namespaces[index];
     return acc;
-  }, {} as LocaleNamespaces);
+  }, {} as any);
 
-  return namespacesObject;
+  return namespacesObject as I18nNamespaces;
 }
 
 async function loadLocaleNamespaces(
   locale: string,
   country?: string,
   currency?: string
-) {
+): Promise<I18nNamespaces> {
   // list all files in locale directory
   if (
     process.env.NODE_ENV === "production" &&
@@ -62,7 +62,7 @@ async function loadLocaleNamespaces(
 }
 
 export async function loadNamespacesFromCache(
-  namespaces: string[],
+  namespaces: (keyof I18nNamespaces)[],
   locale: string,
   country?: string, // TODO:
   currency?: string
@@ -76,7 +76,7 @@ export async function loadNamespacesFromCache(
   const namespacesObject = namespaces.reduce((acc, namespace) => {
     acc[namespace] = localeNamespaces[namespace];
     return acc;
-  }, {} as LocaleNamespaces);
+  }, {} as any);
 
-  return namespacesObject;
+  return namespacesObject as I18nNamespaces;
 }

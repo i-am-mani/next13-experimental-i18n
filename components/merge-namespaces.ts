@@ -1,17 +1,19 @@
-import { LocaleNamespaces } from ".";
+import { I18nNamespaces } from "../i18n";
 
+// TODO: clean up usage of any everywhere here
 export function mergeNamespaceInPlace(
-  lsNamespace: LocaleNamespaces,
-  rsNamespace: LocaleNamespaces
+  lsNamespace: I18nNamespaces,
+  rsNamespace: Partial<I18nNamespaces>
 ) {
   Object.keys(rsNamespace).forEach((namespace) => {
-    Object.keys(rsNamespace[namespace]).forEach((label) => {
-      const replaceValue = rsNamespace[namespace][label];
+    Object.keys((rsNamespace as any)[namespace]).forEach((label) => {
+      const replaceValue = (rsNamespace as any)[namespace][label];
       if (replaceValue == null) return;
 
-      if (lsNamespace[namespace] == null) lsNamespace[namespace] = {};
+      if ((lsNamespace as any)[namespace] == null)
+        (lsNamespace as any)[namespace] = {};
 
-      lsNamespace[namespace][label] = replaceValue;
+      (lsNamespace as any)[namespace][label] = replaceValue;
     });
   });
 }

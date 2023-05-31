@@ -1,19 +1,26 @@
+import { I18nNamespaces } from "../i18n";
 import { useTranslationsClient } from "./I18nProvider";
+import { LocalizationCore } from "./core";
 
-export function useTranslationServerOnly(
-  namespace: string
-): (key: string) => string {
+export function useTranslationServerOnly<T extends keyof I18nNamespaces>(
+  namespace: T
+): (key: keyof I18nNamespaces[T]) => string {
   const i18n = globalThis.i18nTranslations;
-  const namespaceRecords = i18n.namespaces[namespace];
 
-  return (key: string) => {
-    const value = typeof namespaceRecords === "object" && namespaceRecords[key];
-    return typeof value === "string" ? value : key;
+  const fn = (key: keyof I18nNamespaces[T]) => {
+    const core = LocalizationCore({
+      defaultNamespace: namespace,
+      locale: i18n.locale,
+      namespaces: i18n.namespaces,
+    });
+    return core.t(key);
   };
+
+  return fn;
 }
 
-export function useTranslation(ns: string) {
+export function useTranslation<T extends keyof I18nNamespaces>(ns: T) {
   const isServerOnly = typeof window === "undefined";
   const useT = isServerOnly ? useTranslationServerOnly : useTranslationsClient;
-  return { t: useT(ns) };
+  return { t: useT<T>(ns) };
 }

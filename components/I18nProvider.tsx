@@ -1,14 +1,19 @@
 "use client";
 import * as React from "react";
 import { LocaleNamespaces } from ".";
+import { I18nNamespaces } from "../i18n";
 
-const I18nContext = React.createContext<LocaleNamespaces>({});
+const I18nContext = React.createContext<LocaleNamespaces>(
+  {} as LocaleNamespaces
+);
 
-export function useTranslationsClient(namespace: string) {
+export function useTranslationsClient<T extends keyof I18nNamespaces>(
+  namespace: T
+) {
   const context = React.useContext(I18nContext);
   const translations = context[namespace];
 
-  return (key: string) => {
+  return (key: keyof I18nNamespaces[T]) => {
     const value = typeof translations === "object" && translations[key];
     return typeof value === "string" ? value : key;
   };

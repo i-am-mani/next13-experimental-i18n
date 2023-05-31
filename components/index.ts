@@ -1,9 +1,11 @@
-export type Namespace = {
-  [key: string]: string;
+import { I18nNamespaces } from "../i18n";
+
+export type Namespace<K extends keyof I18nNamespaces> = {
+  [key in keyof I18nNamespaces[K]]: string;
 };
 
 export type LocaleNamespaces = {
-  [key: string]: Namespace;
+  [key in keyof I18nNamespaces]: Namespace<key>;
 };
 
 export type LocaleTranslations = {
