@@ -26,3 +26,4 @@ During development each refresh will cause the translation files to be read and 
 
 - https://nextjs.org/docs/app/building-your-application/routing/internationalization
 - https://github.com/vercel/next.js/issues/41980
+- https://github.com/aralroca/next-translate
