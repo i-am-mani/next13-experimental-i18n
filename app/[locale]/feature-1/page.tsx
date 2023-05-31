@@ -6,10 +6,28 @@ import { I18nConfigurations } from "../../../i18n";
 import { loadNamespacesFromCache } from "../../../components/initializer";
 import { useTranslation } from "../../../components/useTranslation";
 
+function getLocale(locale: string) {
+  if (locale.indexOf("-") > -1) {
+    const [language, country] = locale.split("-");
+    return {
+      language: language,
+      country: country,
+    };
+  } else {
+    return {
+      language: locale,
+      country: undefined, // use default namespaces
+    };
+  }
+}
+
 export default async function Page({ params }: { params: { locale: string } }) {
+  const { language, country } = getLocale(params.locale);
+
   const translations = await loadNamespacesFromCache(
     [...I18nConfigurations.pages.common, ...I18nConfigurations.pages.feature1],
-    params.locale
+    language,
+    country
   );
   const { t } = useTranslation("common");
 

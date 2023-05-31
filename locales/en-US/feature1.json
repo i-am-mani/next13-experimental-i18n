@@ -1,5 +1,4 @@
 {
   "source": "en-US",
-  "first_page_title": "Second page using en-US",
-  "client_label": "Message to Client-0 in en-US"
+  "client_label": "This is a message specific to en-US"
 }

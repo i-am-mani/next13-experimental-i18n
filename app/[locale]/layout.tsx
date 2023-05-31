@@ -26,6 +26,10 @@ export default function RootLayout({
       name: "Feature-1(da)",
       link: "/da/feature-1",
     },
+    {
+      name: "Feature-1(en-US)",
+      link: "/en-US/feature-1",
+    },
   ];
 
   return (
