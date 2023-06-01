@@ -1,5 +1,10 @@
 {
+  "source": "da",
   "first_page_title": "Anden side",
-  "server_label": "Besked til server",
-  "client_label": "Besked til klient"
+  "server_label": "Besked til serveren",
+  "client_label": "Besked læst fra klientkomponent",
+  "server_variable_key": "Hej, '{{name}}'",
+  "pluralization_0": "Demonstration af flertalsbøjning ved eksplicit tælling",
+  "cart_1": "Du har ét element i din kurv",
+  "cart_other": "Du har {{count}} elementer i din kurv"
 }

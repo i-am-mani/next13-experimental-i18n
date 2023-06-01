@@ -1,6 +1,5 @@
 import { I18nNamespaces } from "../i18n";
 
-// TODO: clean up usage of any everywhere here
 export function mergeNamespaceInPlace(
   lsNamespace: I18nNamespaces,
   rsNamespace: Partial<I18nNamespaces>

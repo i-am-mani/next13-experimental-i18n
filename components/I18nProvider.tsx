@@ -1,32 +1,45 @@
 "use client";
 import * as React from "react";
-import { LocaleNamespaces } from ".";
-import { I18nNamespaces } from "../i18n";
+import { I18nNamespaces, LiteralUnion } from "../i18n";
+import { LocalizationCore } from "./core";
+import { LocaleConfig } from ".";
 
-const I18nContext = React.createContext<LocaleNamespaces>(
-  {} as LocaleNamespaces
-);
+type TContext = { namespaces: I18nNamespaces; config: LocaleConfig };
+const I18nContext = React.createContext<TContext>({} as TContext);
 
 export function useTranslationsClient<T extends keyof I18nNamespaces>(
   namespace: T
 ) {
   const context = React.useContext(I18nContext);
-  const translations = context[namespace];
+  const i18n = context.config;
 
-  return (key: keyof I18nNamespaces[T]) => {
-    const value = typeof translations === "object" && translations[key];
-    return typeof value === "string" ? value : key;
+  const fn = (
+    key: LiteralUnion<keyof I18nNamespaces[T]>,
+    interpolation?: { [key: string]: string | number }
+  ) => {
+    const core = LocalizationCore({
+      defaultNamespace: namespace,
+      locale: i18n,
+      namespaces: context.namespaces,
+    });
+    return core.t(key as string, interpolation);
   };
+
+  return fn;
 }
 
 export function I18nProvider({
+  config,
   namespaces,
   children,
 }: {
-  namespaces: LocaleNamespaces;
+  config: LocaleConfig;
+  namespaces: I18nNamespaces;
   children: React.ReactNode;
 }) {
   return (
-    <I18nContext.Provider value={namespaces}>{children}</I18nContext.Provider>
+    <I18nContext.Provider value={{ namespaces, config }}>
+      {children}
+    </I18nContext.Provider>
   );
 }

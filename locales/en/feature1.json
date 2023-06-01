@@ -2,5 +2,9 @@
   "source": "en",
   "first_page_title": "Second page",
   "server_label": "Message to Server",
-  "client_label": "Message to Client-0"
+  "client_label": "Message read from client component",
+  "server_variable_key": "Hello, '{{name}}'",
+  "pluralization_0": "Demo of pluralization by explicit count",
+  "cart_1": "You have one item in your cart",
+  "cart_other": "You have {{count}} items in your cart"
 }

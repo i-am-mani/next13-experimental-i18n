@@ -35,6 +35,11 @@ export async function I18nPageWrapper(params: {
   );
 
   return (
-    <I18nProvider namespaces={translations}>{params.children}</I18nProvider>
+    <I18nProvider
+      namespaces={translations}
+      config={{ languageCode: language, countryCode: country }}
+    >
+      {params.children}
+    </I18nProvider>
   );
 }

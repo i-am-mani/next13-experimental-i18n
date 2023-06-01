@@ -1,5 +1,12 @@
-import { LocaleConfig, LocaleNamespaces, Namespace as LabelNamespace } from ".";
-import { I18nNamespaces } from "../i18n";
+import { LocaleConfig } from ".";
+
+type Keyspace = {
+  [key: string]: string;
+};
+
+type LocaleNamespaces = {
+  [key: string]: Keyspace;
+};
 
 function formatCurrency(
   value: number | string,
@@ -66,7 +73,7 @@ function interpolation(
 }
 
 function extractPluralKey(
-  namespaces: LabelNamespace<any>,
+  namespaces: Keyspace,
   key: string,
   count: number,
   locale: string
@@ -100,17 +107,17 @@ function extractPossibleNamespace(key: string, defaultNamespace: string) {
   }
 }
 
-export function LocalizationCore<T extends keyof I18nNamespaces>({
+export function LocalizationCore({
   defaultNamespace,
   locale: localeConfig,
   namespaces,
 }: {
-  defaultNamespace: T;
+  defaultNamespace: string;
   namespaces: LocaleNamespaces;
   locale: LocaleConfig;
 }) {
   const t = (
-    key: keyof I18nNamespaces[T],
+    key: string,
     interpolationValue: Record<string, string | number> | null = null,
     options?: {}
   ) => {
@@ -119,12 +126,12 @@ export function LocalizationCore<T extends keyof I18nNamespaces>({
       key as string,
       defaultNamespace
     );
-    const nsDictionary = (namespaces as any)[tNSKey];
+    const nsDictionary = namespaces[tNSKey];
 
     if (interpolationValue == null) {
       const value = nsDictionary[tKey];
       if (value == null) {
-        throw Error(`Missing translation for key ${key as string}`);
+        throw Error(`Missing translation for key ${key}`);
       } else {
         return value;
       }
@@ -147,7 +154,7 @@ export function LocalizationCore<T extends keyof I18nNamespaces>({
       if (typeof rawText === "object") {
         throw Error(`Nested translation value is not supported!`);
       } else if (rawText == null) {
-        throw Error(`Missing translation for key ${key as string}`);
+        throw Error(`Missing translation for key ${key}`);
       }
 
       return interpolation(rawText, interpolationValue, localeConfig);

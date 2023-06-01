@@ -1,19 +1,22 @@
-import { I18nNamespaces } from "../i18n";
+import { I18nNamespaces, LiteralUnion } from "../i18n";
 import { useTranslationsClient } from "./I18nProvider";
 import { LocalizationCore } from "./core";
 
 export function useTranslationServerOnly<T extends keyof I18nNamespaces>(
   namespace: T
-): (key: keyof I18nNamespaces[T]) => string {
+): (key: LiteralUnion<keyof I18nNamespaces[T]>) => string {
   const i18n = globalThis.i18nTranslations;
 
-  const fn = (key: keyof I18nNamespaces[T]) => {
+  const fn = (
+    key: LiteralUnion<keyof I18nNamespaces[T]>,
+    interpolation?: { [key: string]: string | number }
+  ) => {
     const core = LocalizationCore({
       defaultNamespace: namespace,
       locale: i18n.locale,
       namespaces: i18n.namespaces,
     });
-    return core.t(key);
+    return core.t(key as string, interpolation);
   };
 
   return fn;
