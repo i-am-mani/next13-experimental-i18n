@@ -1,7 +1,6 @@
 import * as React from "react";
 import { I18nProvider } from "../components/I18nProvider";
 import { loadNamespacesFromCache } from "../components/initializer";
-import { I18NConfig } from "next/dist/server/config-shared";
 import { AppI18nPages, I18nConfigurations, I18nNamespaces } from "../i18n";
 
 function getLocale(locale: string) {

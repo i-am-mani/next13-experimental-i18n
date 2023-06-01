@@ -34,7 +34,8 @@ async function loadLocaleNamespaces(
   // list all files in locale directory
   if (
     process.env.NODE_ENV === "production" &&
-    globalThis.i18nTranslations?.locale?.languageCode === locale
+    globalThis.i18nTranslations?.locale?.languageCode === locale &&
+    globalThis.i18nTranslations?.locale?.countryCode === country
   ) {
     return globalThis.i18nTranslations.namespaces;
   }
