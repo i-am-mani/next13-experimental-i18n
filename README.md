@@ -1,3 +1,7 @@
+> This is a prototype for implementing I18n/localization in Next13, implements features such as: Default locale routing, string interpolation, pluralization, type-safe and autocompletion of the labels and namespaces, country tag based overriding of labels. 
+>
+> Its heavily inspired from `next-translate` library and follows the example on next-13 official docs on internationalization.
+
 ### Implementation
 
 In Next-13 all components in app directory are RSC by default, which means they can read translations files directly, we use this ability to read required translations labels given variables `pathname` and `locale`. We map `pathname` to an array of `namespaces`, for the ease of maintaining translation files, eg. `/feature-1` might need namespaces `common + feature-1`.
@@ -12,15 +16,16 @@ During development each refresh will cause the translation files to be read and 
 - [x] Usage of translation in RSC directly
 - [x] Usage of translation in Client side component using Context.Provider approach
 - [x] Cache first read and re-use translations on production env. and support hot reloading without hydration error on development env.
-- [x] Page wrapper to automatically fill-in required i18n namespaces based on locale and pathname key
+- [x] Page wrapper component to automatically fill-in required i18n namespaces based on locale and pathname key
 - [x] Support for Default Locale - i.e use middleware to rewrite `/da/[path]` to `/[path]`
-- [x] Support features such as query substitution and plural forms
+- [x] Support query substitution(interpolation) and plural forms
   - [x] Interpolation
   - [x] Plural forms
 - [x] Country tag based overriding of labels
   - eg. `en` defines all generic labels and `en-US | en-UK` implement country specific labels variants
   - if country code is passed then override the labels in generic with more specific country labels.
-- [x] Type-safety + autocompletion (low priority)
+- [x] Type-safety + autocompletion for namespaces and keys
+- [ ] Type-safe label for namespace separated keys like `Namespace:key1` 
 
 #### References:
 
